@@ -1,3 +1,45 @@
+# MiniGit fork
+
+This is a fork of [`light-tech/MiniGit`](https://github.com/light-tech/MiniGit).
+
+## Fork changes
+
+This fork exposes the underlying `libgit2` `git_diff_delta.status` value through `DiffDelta.status`.
+
+This allows Swift/iOS clients to distinguish Git file changes more accurately, including:
+
+- modified
+- added
+- deleted
+- renamed
+- copied
+- untracked
+- ignored
+- type changed
+- unreadable
+- conflicted
+
+## Added API
+
+@property (readonly) int status;
+
+Added to:
+
+Sources/XGit/include/DiffDelta.h
+
+Assigned from:
+
+self->_status = delta->status;
+
+in:
+
+Sources/XGit/internal/DiffDelta.mm
+Purpose
+
+The original MiniGit DiffDelta exposes file paths but not the raw delta status. For apps such as Pomez, this makes untracked files difficult to distinguish from modified files.
+
+This fork keeps the original MiniGit behavior and only exposes the missing status value.
+
 ### MiniGit
 
 Minimal Swift package to provide most common Git functionalities.
