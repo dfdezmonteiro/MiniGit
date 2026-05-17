@@ -112,6 +112,27 @@ struct CheckoutHandler: CheckoutProgressReporter, GitErrorReporter {
         git_reset_from_annotated(repo, target, GIT_RESET_HARD, &checkout_opts);
     }
 
+    void discardPath(git_repository *repo, const char *path) {
+      git_checkout_options checkout_opts = GIT_CHECKOUT_OPTIONS_INIT;
+
+      checkout_opts.checkout_strategy = GIT_CHECKOUT_FORCE;
+
+      const char *paths[] = { path };
+
+      git_strarray pathspec;
+      pathspec.strings = (char **)paths;
+      pathspec.count = 1;
+
+      checkout_opts.paths = pathspec;
+
+      setupCheckoutCallbacks(&checkout_opts);
+
+      if (reportError(
+            git_checkout_head(repo, &checkout_opts),
+            "Discard: Failed to restore path"
+            )) return;
+    }
+
     git_annotated_commit *target = NULL;
     const char *target_ref = NULL;
     git_reference *branch = NULL;

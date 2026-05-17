@@ -137,6 +137,17 @@
                :(id<ErrorReceiverProtocol> _Nullable)errorReceiver;
 
 /**
+ * Discard changes in a file from the working tree.
+ *
+ * Equivalent to:
+ *
+ * git restore path
+ *
+ * @param path Path to the file to discard relative to the repo root
+ */
+- (void)discard:(nonnull NSString*)path :(id _Nullable)errorReceiver;
+
+/**
  * Obtain the user's signature (user name and email) from the repo
  * configuration.
  */

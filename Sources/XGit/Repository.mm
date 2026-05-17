@@ -207,6 +207,10 @@ int addReferenceToTargetCommit(const char *name, void *payload)
     IndexHandler(errorReceiver).unstage(repo, [path UTF8String]);
 }
 
+- (void)discard:(nonnull NSString*)path :(id _Nullable)errorReceiver {
+    CheckoutHandler(nil, errorReceiver).discardPath(repo, [path UTF8String]);
+}
+
 - (Signature* _Nullable)getSignature
 {
     git_signature *signature;
